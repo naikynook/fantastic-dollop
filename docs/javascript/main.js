@@ -1,25 +1,47 @@
-// 1. Target the HTML input box and search button
-const input = document.querySelector(".zipcode");
-const btn = document.querySelector(".search-button");
+// access elements in the DOM
+let input = document.querySelector(".zipcode");
+let btn = document.querySelector(".search-button");
+let form = document.querySelector("form");
 
-// 2. The Data Machine: Fetches weather for whatever zip code is passed into it
-function getWeatherData(zip) {
-  const API_KEY = config.WEATHER_API_KEY;
+let CITY_NAME = document.querySelector(".city_name");
+let CITY_TEMP = document.querySelector(".temperature");
+
+// NEW: Target the image tag
+let image = document.querySelector("img");
+
+// write a function to get weather data
+const getWeatherData = (zip) => {
+  const API_KEY = "601d9745ea5b2e9a17a7fe5ab75d857a";
   const API_ENDPOINT = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${API_KEY}`;
 
   fetch(API_ENDPOINT)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Live Weather Data:", data);
-    });
+    .then(response => response.json())
+    .then(data => {
+      let local_weather_data = data;
+      
+      CITY_NAME.textContent = local_weather_data.name;
+      
+      let weather_in_celsius = Math.round(
+        local_weather_data.main.temp - 273
+      );
+      CITY_TEMP.textContent = weather_in_celsius + " C";
+
+      // NEW: Grab the icon code and set the image source
+       let WEATHER_ICON = local_weather_data.weather[0].icon
+      image.setAttribute(
+        'src', 
+        `https://openweathermap.org/img/wn/${WEATHER_ICON}@2x.png`
+      );
+  });
 }
 
-// 3. The Event Handler: Runs when the button is clicked
-function getZipCode(e) {
-  e.preventDefault();        // Stops the form from reloading the page
-  const zip_code = input.value; // Grabs the text typed into the box
-  getWeatherData(zip_code);  // Passes that text into the data machine
+form.reset();
+input.focus();
+
+const getZipcode = e => {
+  e.preventDefault();
+  let ZIP_CODE = input.value;
+  getWeatherData(ZIP_CODE);
 }
 
-// 4. The Listener: Attaches the handler radar to the button click
-btn.addEventListener("click", getZipCode);
+btn.addEventListener('click', getZipcode);

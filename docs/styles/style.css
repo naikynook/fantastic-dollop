@@ -29,7 +29,7 @@ input[type="text"] {
   text-align: center;
 }
 
-input::placeholder{
+input::placeholder {
   color: #141414;
 }
 
@@ -43,17 +43,25 @@ input::placeholder{
   border: 1px solid #f4f4f4;
 }
 
-.output_component{
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* --- THE FIXED SECTION --- */
+
+.output-container {
+  /* Removed position: absolute, top, left, and transform */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  margin-top: 40px; /* Pushes the text safely below the search box */
 }
 
-.city_name, .temperature{
+.city_name, .temperature {
   text-align: center;
   font-size: 3em;
   line-height: 1.2em;
   color: white;
 }
 
+.output-container img {
+  margin-top: 15px;
+}
